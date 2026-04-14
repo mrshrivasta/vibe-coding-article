@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Why 'Vibe Coding' is a Cybersecurity Nightmare — by Karanam Shrivasta</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e0f11;
+    --surface: #161719;
+    --surface2: #1e2024;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8e6e0;
+    --muted: #9a9893;
+    --accent: #3ddc84;
+    --accent-dim: rgba(61,220,132,0.12);
+    --accent2: #f7a435;
+    --accent2-dim: rgba(247,164,53,0.12);
+    --danger: #f05c5c;
+    --danger-dim: rgba(240,92,92,0.12);
+    --info: #5b9ef7;
+    --info-dim: rgba(91,158,247,0.1);
+    --serif: 'Source Serif 4', Georgia, serif;
+    --display: 'Playfair Display', Georgia, serif;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--serif);
+    font-size: 19px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 24px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(61,220,132,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border: 1px solid rgba(61,220,132,0.25);
+    border-radius: 4px;
+    padding: 4px 12px;
+    margin-bottom: 28px;
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1.18;
+    max-width: 780px;
+    margin: 0 auto 20px;
+    color: #f0ede8;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 36px;
+    font-style: italic;
+  }
+  .byline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    font-size: 14px;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+  .byline-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #1a8c4e);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 600; color: #0e2018;
+    flex-shrink: 0;
+    font-family: var(--mono);
+  }
+  .byline-text strong { color: var(--text); font-weight: 600; }
+
+  /* ─── DISCLAIMER ─── */
+  .disclaimer-bar {
+    background: var(--info-dim);
+    border-left: 3px solid var(--info);
+    padding: 14px 20px;
+    font-size: 13.5px;
+    color: #90b8f8;
+    font-family: var(--mono);
+    line-height: 1.6;
+  }
+
+  /* ─── ARTICLE BODY ─── */
+  .article-wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 24px 80px;
+  }
+
+  .article-wrap p {
+    margin-bottom: 1.6rem;
+    color: var(--text);
+  }
+
+  .article-wrap h2 {
+    font-family: var(--display);
+    font-size: clamp(24px, 3.5vw, 32px);
+    font-weight: 700;
+    color: #f0ede8;
+    margin: 3rem 0 1rem;
+    line-height: 1.25;
+  }
+
+  .article-wrap h3 {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 2.5rem 0 0.8rem;
+  }
+
+  /* ─── RISK CARD ─── */
+  .risk-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--danger);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 2.2rem 0;
+  }
+  .risk-card.amber { border-left-color: var(--accent2); }
+  .risk-card.green { border-left-color: var(--accent); }
+  .risk-card.blue  { border-left-color: var(--info); }
+
+  .risk-number {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--danger);
+    margin-bottom: 6px;
+  }
+  .risk-card.amber .risk-number { color: var(--accent2); }
+  .risk-card.green .risk-number { color: var(--accent); }
+  .risk-card.blue  .risk-number { color: var(--info); }
+
+  .risk-card h3 {
+    font-family: var(--display);
+    font-size: 20px;
+    font-weight: 700;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #f0ede8;
+    margin: 0 0 0.8rem;
+  }
+  .risk-card p { margin-bottom: 0.8rem; font-size: 17px; }
+  .risk-card p:last-child { margin-bottom: 0; }
+
+  /* ─── SCENARIO BOX ─── */
+  .scenario {
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin: 1.4rem 0;
+    font-size: 16px;
+  }
+  .scenario-label {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 10px;
+    display: block;
+  }
+  .scenario-title {
+    font-family: var(--display);
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 400;
+    color: #d4d1cb;
+    margin-bottom: 10px;
+  }
+
+  /* ─── CODE BLOCK ─── */
+  .code-block {
+    background: #0a0b0d;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 22px;
+    font-family: var(--mono);
+    font-size: 13.5px;
+    line-height: 1.7;
+    overflow-x: auto;
+    margin: 1.2rem 0;
+    color: #cdd6f4;
+  }
+  .code-block .c-red    { color: #f38ba8; }
+  .code-block .c-green  { color: #a6e3a1; }
+  .code-block .c-yellow { color: #f9e2af; }
+  .code-block .c-blue   { color: #89b4fa; }
+  .code-block .c-muted  { color: #6c7086; }
+  .code-block .c-warn   { color: var(--accent2); }
+
+  /* ─── PULL QUOTE ─── */
+  .pull-quote {
+    border-left: 3px solid var(--accent);
+    padding: 8px 24px;
+    margin: 2.5rem 0;
+  }
+  .pull-quote p {
+    font-family: var(--display);
+    font-size: clamp(20px, 2.8vw, 26px);
+    font-style: italic;
+    color: #d8d5cf;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ─── SOLUTIONS ─── */
+  .solutions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 1.8rem 0;
+  }
+  @media (max-width: 600px) {
+    .solutions-grid { grid-template-columns: 1fr; }
+  }
+  .solution-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .solution-item .sol-icon {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    display: block;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .solution-item strong {
+    display: block;
+    font-family: var(--display);
+    font-size: 16px;
+    font-weight: 700;
+    color: #eae7e1;
+    margin-bottom: 6px;
+  }
+  .solution-item p {
+    font-size: 14.5px;
+    color: var(--muted);
+    line-height: 1.65;
+    margin: 0;
+  }
+
+  /* ─── STAT / HIGHLIGHT ─── */
+  .stat-highlight {
+    text-align: center;
+    padding: 32px 20px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+  .stat-highlight .stat-num {
+    font-family: var(--display);
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    display: block;
+  }
+  .stat-highlight .stat-label {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  /* ─── CONCLUSION ─── */
+  .conclusion-box {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: 12px;
+    padding: 36px 36px;
+    margin-top: 3rem;
+    text-align: center;
+  }
+  .conclusion-box h2 {
+    margin-top: 0;
+  }
+
+  /* ─── AUTHOR BIO ─── */
+  .author-bio {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 32px;
+    margin-top: 3rem;
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .author-avatar-lg {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3ddc84 0%, #1a6640 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono);
+    font-size: 20px; font-weight: 600;
+    color: #0a1f12;
+    flex-shrink: 0;
+  }
+  .author-bio-info h4 {
+    font-family: var(--display);
+    font-size: 18px;
+    font-weight: 700;
+    color: #f0ede8;
+    margin-bottom: 4px;
+  }
+  .author-bio-info .author-meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    margin-bottom: 12px;
+    letter-spacing: 0.08em;
+  }
+  .author-bio-info p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 14px;
+  }
+  .author-links { display: flex; gap: 12px; flex-wrap: wrap; }
+  .author-link {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--info);
+    text-decoration: none;
+    border: 1px solid rgba(91,158,247,0.3);
+    border-radius: 4px;
+    padding: 4px 12px;
+  }
+  .author-link:hover { background: var(--info-dim); }
+
+  /* ─── FOOTER ─── */
+  .article-footer {
+    text-align: center;
+    padding: 40px 24px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #4a4a4a;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ─── MISC ─── */
+  .divider {
+    display: flex; align-items: center; gap: 12px;
+    margin: 2.5rem 0;
+    color: var(--border2);
+    font-family: var(--mono);
+    font-size: 18px;
+    letter-spacing: 0.4em;
+    justify-content: center;
+  }
+
+  strong { font-weight: 600; color: #e0ddd7; }
+  em { font-style: italic; }
+  code {
+    font-family: var(--mono);
+    font-size: 0.83em;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1px 6px;
+    color: var(--accent2);
+  }
+
+  @media (max-width: 600px) {
+    .author-bio { flex-direction: column; }
+    .hero { padding: 56px 20px 44px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="hero-tag">Cybersecurity · April 14, 2026</span>
+  <h1>Why <em>'Vibe Coding'</em> is a Cybersecurity Nightmare (No One Talks About This)</h1>
+  <p class="hero-sub">You asked an AI to build your app. It said yes. But did it think about what happens when someone tries to break it?</p>
+  <div class="byline">
+    <div class="byline-avatar">KS</div>
+    <div class="byline-text">
+      <strong>Karanam Shrivasta</strong> · Cybersecurity Enthusiast<br>
+      Published: April 14, 2026 · 12 min read
+    </div>
+  </div>
+</header>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer-bar">
+  ⚠ DISCLAIMER — This article is written purely for educational purposes. All scenarios and examples mentioned are fictional and do not represent real incidents. The goal is to spread awareness about cybersecurity risks in AI-assisted development. No harmful, actionable instructions are included.
+</div>
+
+<!-- ARTICLE BODY -->
+<main class="article-wrap">
+
+  <p>
+    Imagine this: it's 2 a.m. You have a startup idea that's been living rent-free in your head for three months. You open your laptop, pull up your favorite AI coding assistant, and type: <em>"Build me a full-stack web app with login, user dashboard, and a payment system."</em>
+  </p>
+  <p>
+    Twenty minutes later — I kid you not — you're staring at a working prototype. Auth flows, API routes, a slick React frontend. You haven't written a single line from scratch. You've just vibed your way to an MVP.
+  </p>
+  <p>
+    Welcome to the era of <strong>Vibe Coding</strong>. It feels magical. It <em>is</em> kind of magical. But there's a dark side to this magic that almost nobody is talking about — and it lives in the world of cybersecurity.
+  </p>
+
+  <div class="pull-quote">
+    <p>"When you move fast and break things, sometimes what you break isn't just features — it's the security of every single user who trusted your app."</p>
+  </div>
+
+  <h2>So What Exactly Is Vibe Coding?</h2>
+
+  <p>
+    The term "Vibe Coding" — popularized by AI researcher Andrej Karpathy — describes a style of software development where you lean almost entirely on AI to generate, debug, and ship code. You describe what you want in plain English. The AI writes it. You maybe skim it, run it, and push it to production.
+  </p>
+  <p>
+    The core philosophy: <em>you set the vibe, the AI does the typing.</em> Understanding every line of code you deploy? Optional. Knowing how it works under the hood? Also optional. Shipping fast? Absolutely mandatory.
+  </p>
+  <p>
+    To be clear — this isn't a takedown of AI coding tools. They are genuinely incredible, and they've lowered the barrier to building things in ways that would've seemed like science fiction five years ago. The problem isn't the tool. The problem is the <strong>false sense of security</strong> that comes with it.
+  </p>
+  <p>
+    Because when you vibe-code your way to an app without understanding what's running under the hood, you're not just building features. You're potentially building vulnerabilities, misconfigurations, and open doors — and handing them straight to your users.
+  </p>
+
+  <div class="divider">· · ·</div>
+
+  <h2>The 5 Cybersecurity Risks Nobody Warns You About</h2>
+
+  <!-- RISK 1 -->
+  <div class="risk-card">
+    <div class="risk-number">Risk 01 / Danger Level: High</div>
+    <h3>Hidden Vulnerabilities in AI-Generated Code</h3>
+    <p>
+      AI models are trained on billions of lines of code from the internet. That includes a lot of great code — and a lot of <em>terrible</em> code. Vulnerable code. Deprecated patterns. Old Stack Overflow answers from 2009 that nobody should be using in 2026.
+    </p>
+    <p>
+      The AI doesn't always know the difference between a secure pattern and an insecure one. It knows what <em>looks</em> like working code. And when you're vibing, you're not auditing — you're accepting.
+    </p>
+
+    <div class="scenario">
+      <span class="scenario-label">Fictional Scenario</span>
+      <div class="scenario-title">"The SQL Injection That Slipped Through the Vibe"</div>
+      <p style="font-size:15.5px; color:#b8b5af; margin:0;">
+        Imagine a fictional developer — let's call him Arjun — who uses an AI tool to build a job-listing platform. He asks the AI for a search feature. The AI generates a database query that concatenates user input directly into the SQL string. Arjun sees "search working!" and ships it. Weeks later, an attacker enters <code>' OR '1'='1</code> in the search box and exports the entire user database. The AI code wasn't wrong for its era — it just wasn't secure. And Arjun never knew to check.
+      </p>
+    </div>
+
+    <div class="code-block">
+<span class="c-muted"># AI-generated (fictional) — INSECURE pattern</span>
+query = <span class="c-yellow">"SELECT * FROM users WHERE name = '"</span> + user_input + <span class="c-yellow">"'"</span>
+<span class="c-muted"># Classic SQL injection surface. Vibe coders rarely catch this.</span>
+
+<span class="c-muted"># What it should look like — parameterized query</span>
+query = <span class="c-green">"SELECT * FROM users WHERE name = ?"</span>
+cursor.execute(query, <span class="c-blue">(user_input,)</span>)
+    </div>
+
+    <p>
+      The kicker? The AI might generate the secure version <em>sometimes</em> — and the vulnerable version other times. Without knowing what to look for, you'd never catch it.
+    </p>
+  </div>
+
+  <!-- RISK 2 -->
+  <div class="risk-card amber">
+    <div class="risk-number">Risk 02 / Danger Level: Critical</div>
+    <h3>The Developer Doesn't Understand Their Own Code</h3>
+    <p>
+      Here's the uncomfortable truth at the heart of Vibe Coding: when an AI writes your code and you just run it, you have no mental model of what it's doing. And in cybersecurity, understanding your own system is not optional — it's your first line of defense.
+    </p>
+    <p>
+      Traditional developers who write code line by line build intuition. They notice when something feels off. They know what their login function does because they wrote it. Vibe coders don't have that intuition — they have a black box they trust implicitly.
+    </p>
+
+    <div class="scenario">
+      <span class="scenario-label">Fictional Scenario</span>
+      <div class="scenario-title">"The Feature That Was Also a Backdoor"</div>
+      <p style="font-size:15.5px; color:#b8b5af; margin:0;">
+        Picture a fictional developer named Priya, building a SaaS dashboard. She asks her AI assistant to add an "admin override" feature for testing. The AI adds a route: <code>/admin?debug=true&bypass=1</code> — no authentication required, full database access. She uses it in development, forgets it's there, ships to production. That endpoint is never visible in the UI — but it's discoverable. An automated scanner finds it in three hours.
+      </p>
+    </div>
+
+    <p>
+      When you don't understand what you deployed, you can't inventory your attack surface. You don't know what to protect because you don't know what exists.
+    </p>
+  </div>
+
+  <!-- RISK 3 -->
+  <div class="risk-card">
+    <div class="risk-number">Risk 03 / Danger Level: High</div>
+    <h3>Insecure Dependencies — The Supply Chain Problem</h3>
+    <p>
+      When you ask an AI to build something, it doesn't just write code — it reaches for libraries. Packages. Third-party dependencies that solve problems quickly. That's efficient. That's also a massive attack vector that most vibe coders never think about.
+    </p>
+    <p>
+      The software supply chain is one of the most dangerous threat landscapes today. Malicious actors publish packages with names almost identical to popular ones — a trick called <strong>typosquatting</strong>. They inject malicious code into legitimate packages. They wait for developers to blindly install whatever an AI recommends.
+    </p>
+
+    <div class="scenario">
+      <span class="scenario-label">Fictional Scenario</span>
+      <div class="scenario-title">"npm install chaos"</div>
+      <p style="font-size:15.5px; color:#b8b5af; margin:0;">
+        A fictional student developer asks their AI assistant to help them process image uploads. The AI suggests a package called <code>sharp-utils</code>. The developer runs <code>npm install sharp-utils</code>. Unknown to them, this isn't the popular <code>sharp</code> image library — it's a fictionally-crafted lookalike with a hidden cryptocurrency miner bundled inside. It runs silently in the background. The app works perfectly. The crypto miner does too.
+      </p>
+    </div>
+
+    <p>
+      AI tools don't always verify whether a package is maintained, audited, or safe. They recommend based on patterns in their training data. <em>You</em> need to verify what you install.
+    </p>
+  </div>
+
+  <!-- RISK 4 -->
+  <div class="risk-card amber">
+    <div class="risk-number">Risk 04 / Danger Level: Very High</div>
+    <h3>Over-Trust in AI Suggestions — "The AI Said It's Fine"</h3>
+    <p>
+      There's a new cognitive bias in the developer world and it doesn't have a name yet, so I'll name it: <strong>AI deference syndrome.</strong> It's the unconscious tendency to trust whatever the AI outputs because it sounds confident, looks competent, and produces working results quickly.
+    </p>
+    <p>
+      AI coding assistants don't have liability. They don't get fired if your app gets breached. They don't understand <em>your</em> threat model, your user base, or your compliance requirements. They are autocomplete engines operating at an astonishing scale — but they are not security engineers.
+    </p>
+
+    <div class="scenario">
+      <span class="scenario-label">Fictional Scenario</span>
+      <div class="scenario-title">"Secure? The AI didn't mention any problems..."</div>
+      <p style="font-size:15.5px; color:#b8b5af; margin:0;">
+        Fictional developer Marcus asks his AI assistant: "Is this authentication code secure?" The AI responds: "This looks good! The password hashing uses bcrypt and the JWT tokens have expiry." Marcus ships it. What the AI didn't mention: the JWT secret is hardcoded as <code>"secret123"</code>, the token expiry is set to 30 days with no refresh mechanism, and there's no rate limiting on the login endpoint — making it trivially brute-forceable. The AI wasn't lying. It just didn't know what it didn't know.
+      </p>
+    </div>
+
+    <div class="code-block">
+<span class="c-muted"># Fictional AI-generated code — looks fine, isn't quite</span>
+SECRET_KEY = <span class="c-red">"secret123"</span>  <span class="c-warn"># ← hardcoded, terrible idea</span>
+
+token = jwt.encode(
+  {<span class="c-yellow">"user_id"</span>: user.id, <span class="c-yellow">"exp"</span>: datetime.now() + timedelta(<span class="c-red">days=30</span>)},
+  SECRET_KEY  <span class="c-warn"># ← no algorithm specified, no env variable</span>
+)
+<span class="c-muted"># The AI called it "good authentication." Technically, it functions.</span>
+<span class="c-muted"># Securely? That's a different question entirely.</span>
+    </div>
+  </div>
+
+  <!-- RISK 5 -->
+  <div class="risk-card blue">
+    <div class="risk-number">Risk 05 / Danger Level: Critical</div>
+    <h3>Misconfigured Authentication & APIs — The Open Front Door</h3>
+    <p>
+      APIs are the backbone of modern applications. They're also one of the most common places where vibe-coded apps fall apart from a security standpoint. An AI will generate an API that <em>works</em> — meaning it returns the right data, accepts the right parameters. But "working" and "secure" are not the same thing.
+    </p>
+    <p>
+      Misconfigured authentication — missing token validation, overly permissive CORS policies, absent rate limiting, no input sanitization — is the low-hanging fruit that attackers pick first. And AI-generated APIs serve it up on a platter.
+    </p>
+
+    <div class="scenario">
+      <span class="scenario-label">Fictional Scenario</span>
+      <div class="scenario-title">"The API That Answered Everyone's Questions"</div>
+      <p style="font-size:15.5px; color:#b8b5af; margin:0;">
+        A fictional fintech startup uses vibe coding to ship their MVP. Their AI generates an API endpoint <code>/api/user/data</code> that returns user financial records. Authentication is implemented — but only on the frontend. The API itself checks for a header but defaults to returning data if the header is malformed rather than rejecting the request. An attacker sends a malformed Authorization header and receives a 200 OK with full user records. The frontend protected the button. The backend protected nothing.
+      </p>
+    </div>
+
+    <p>
+      Authentication must be enforced at the API layer, not just the UI layer. This is security basics — but when you don't write the code, nobody teaches you the basics.
+    </p>
+  </div>
+
+  <div class="stat-highlight">
+    <span class="stat-num">74%</span>
+    <span class="stat-label">of developers report they don't fully review AI-generated code before deploying it.<br><em>(Hypothetical illustration — the real numbers are eye-opening either way.)</em></span>
+  </div>
+
+  <div class="divider">· · ·</div>
+
+  <h2>Okay, So What Do We Actually Do About It?</h2>
+
+  <p>
+    I'm not here to tell you to stop using AI coding tools. That would be like telling someone in 2005 to stop using the internet because it has viruses. The future is already here. We adapt, we learn, we build smarter.
+  </p>
+  <p>
+    Here's what that looks like in practice:
+  </p>
+
+  <div class="solutions-grid">
+    <div class="solution-item">
+      <span class="sol-icon">Fix 01</span>
+      <strong>Treat AI Code Like a Pull Request</strong>
+      <p>Review every AI-generated block before shipping. Look for hardcoded secrets, raw SQL queries, and missing input validation. If you wouldn't merge unreviewed code from a junior dev, don't do it from an AI either.</p>
+    </div>
+    <div class="solution-item">
+      <span class="sol-icon">Fix 02</span>
+      <strong>Use SAST / Static Analysis Tools</strong>
+      <p>Tools like Semgrep, Bandit (Python), or ESLint Security Plugin can automatically scan your codebase for known vulnerability patterns — things an AI might generate without flagging.</p>
+    </div>
+    <div class="solution-item">
+      <span class="sol-icon">Fix 03</span>
+      <strong>Audit Your Dependencies</strong>
+      <p>Run <code>npm audit</code> or <code>pip-audit</code> after every install. Check package names carefully against official documentation. Use lock files and pin versions. Never install a package you haven't verified.</p>
+    </div>
+    <div class="solution-item">
+      <span class="sol-icon">Fix 04</span>
+      <strong>Learn the Fundamentals (Seriously)</strong>
+      <p>You don't need to become a security expert. But knowing what SQL injection is, what XSS looks like, and how JWT authentication works will make you infinitely better at catching what your AI misses.</p>
+    </div>
+    <div class="solution-item">
+      <span class="sol-icon">Fix 05</span>
+      <strong>Never Hardcode Secrets</strong>
+      <p>API keys, database credentials, JWT secrets — never in your source code. Use environment variables, secret managers, or tools like HashiCorp Vault. This is non-negotiable, AI-generated or not.</p>
+    </div>
+    <div class="solution-item">
+      <span class="sol-icon">Fix 06</span>
+      <strong>Ask AI Better Security Questions</strong>
+      <p>Instead of "does this look secure?" ask: "What are the top 3 security vulnerabilities in this code?" or "Audit this for OWASP Top 10 issues." Better prompts get better answers. Be your own red team.</p>
+    </div>
+  </div>
+
+  <p>
+    And one more thing — consider doing a <strong>threat modeling session</strong> before you ship, even a simple one. Ask yourself: who might want to attack this? What data are we storing? What's the worst case if someone breaks in? Five minutes of thinking about this before launch is worth weeks of cleanup after.
+  </p>
+
+  <div class="pull-quote">
+    <p>"Vibe coding without security awareness isn't shipping fast — it's shipping debt. The kind that comes due when someone else decides to collect."</p>
+  </div>
+
+  <div class="divider">· · ·</div>
+
+  <!-- CONCLUSION -->
+  <div class="conclusion-box">
+    <h2>The Vibe Is Great. The Blindspot Is Dangerous.</h2>
+    <p>
+      Here's the thought I want to leave you with: every app you build is a promise to the people who use it. A promise that their data is safe. That you thought about what could go wrong. That you didn't just vibe through the security and call it done.
+    </p>
+    <p>
+      AI coding tools have made it possible for a 15-year-old with a laptop and an idea to build something real and ship it to the world. That's genuinely beautiful. But that same accessibility means the bar for "who can accidentally create a security vulnerability" has never been lower.
+    </p>
+    <p>
+      The developers who will stand out in this AI-saturated era won't be the ones who can prompt the best — they'll be the ones who can <em>think critically</em> about what gets built. Who treat AI as a brilliant but unaccountable collaborator that needs supervision, not a security-cleared engineer they can defer to blindly.
+    </p>
+    <p style="margin-bottom:0;">
+      Vibe coding changed what's possible. Now let's make sure it doesn't change who gets hurt in the process.
+    </p>
+  </div>
+
+  <!-- AUTHOR -->
+  <div class="author-bio">
+    <div class="author-avatar-lg">KS</div>
+    <div class="author-bio-info">
+      <h4>Karanam Shrivasta</h4>
+      <div class="author-meta">Cybersecurity Enthusiast · Published April 14, 2026</div>
+      <p>
+        Karanam Shrivasta is a 15-year-old cybersecurity enthusiast who writes about digital safety, emerging threats, and making the internet a slightly less scary place — one article at a time. Proof that you don't need to wait to grow up to care about the digital world.
+      </p>
+      <div class="author-links">
+        <a class="author-link" href="https://www.linkedin.com/in/karanam-shrivasta/" target="_blank">LinkedIn</a>
+        <a class="author-link" href="https://github.com/mrshrivasta/" target="_blank">GitHub</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="article-footer">
+  © 2026 Karanam Shrivasta · Written for educational purposes only · All fictional scenarios created for learning awareness
+</footer>
+
+</body>
+</html>
